@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:orientation="horizontal"
+    app:cardCornerRadius="@dimen/card_view_corner_radius"
+    app:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/touch_selector"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/item_movie_poster_iv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="fill_vertical|fill_horizontal"
+            android:contentDescription="@string/movie_poster_image_description"
+            android:paddingBottom="0dp"
+            android:scaleType="fitXY" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/item_movie_poster_iv"
+            android:alpha="0.9"
+            android:background="@android:color/black">
+
+            <TextView
+                android:id="@+id/item_original_title_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/item_list_text_view_layout_margin_left_right"
+                android:layout_marginTop="@dimen/item_list_text_view_layout_margin_top_bottom"
+                android:layout_marginRight="@dimen/item_list_text_view_layout_margin_left_right"
+                android:layout_marginBottom="@dimen/item_list_text_view_layout_margin_top_bottom"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/colorTextGeneral"
+                tools:text="Hello There" />
+
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

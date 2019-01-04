@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">MovieAppz</string>
+    <string name="favourite_activity_label">My Favourites</string>
+
+    <string name="movie_poster_image_description">Movie Thumbnail</string>
+    <string name="movie_trailer_image_description">Movie Trailer</string>
+
+    <string name="connection_error_message">Failed to connect. Check internet connection</string>
+    <string name="detail_error_message">Getting movie details failed</string>
+    <string name="trailer_error_message">Getting trailers failed</string>
+    <string name="error_401">Invalid API key. Please use a valid API key</string>
+    <string name="error_404">Requested resource could not be found</string>
+
+    <string name="movie_extra_id" translatable="false">MOVIE_EXTRA_ID</string>
+    <string name="fav_extra_id" translatable="false">FAV_EXTRA_ID</string>
+    <string name="extra_movie" translatable="false">EXTRA_MOVIE</string>
+    <string name="extra_favourite_movie" translatable="false">EXTRA_FAVOURITE_MOVIE</string>
+    <string name="recyclerview_save_state" translatable="false">RECYCLERVIEW_SAVE_STATE</string>
+    <string name="save_state" translatable="false">SAVE_STATE</string>
+
+    <string name="sort_by_most_popular">Most Popular</string>
+    <string name="sort_by_most_rated">Top Rated</string>
+    <string name="trailer">Movie Trailers</string>
+    <string name="review">Movie Reviews</string>
+    <string name="action_share">Share</string>
+
+    <string name="add_favourite_error">Movie could not be added to Favourites. Try again later</string>
+    <string name="added_favourite">Added to Favourites</string>
+    <string name="removed_favourites">Removed from Favourites</string>
+    <string name="view_favourites">View Favourite Movies</string>
+    <string name="version">version 1.0</string>
+    <string name="about_desc">MovieAppz adalah aplikasi untuk Tugas Kampus yang mengambil data dari themoviedb.org semoga aplikasi ini bisa berkembang ketahap yang lebih baik</string>
+    <string name="review_desc">The dosi is more hur\'q now than planet. apocalyptic and revolutionary extraterrestrial.</string>
+    <string name="review_title">Review Title</string>
+    <string name="about_app">Tentang Aplikasi</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_data">No favourite available</string>
+</resources>
+
+
