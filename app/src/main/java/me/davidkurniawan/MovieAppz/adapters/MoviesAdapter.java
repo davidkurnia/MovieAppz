@@ -3,6 +3,7 @@ package me.davidkurniawan.MovieAppz.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,14 +69,25 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         return movieList;
     }
 
-    public void setMovieList(List<Movie> movieList) {
+    public void setMovieList(List<Movie> movieList, boolean clearList) {
+
         if (this.movieList != null) {
+
+            if(clearList)this.movieList.clear();
+
             this.movieList.addAll(movieList);
             notifyDataSetChanged();
         } else {
             this.movieList = movieList;
             notifyDataSetChanged();
         }
+
+        for (Movie items :
+                movieList) {
+            Log.d("setMovielistMovie",items.getOverview());
+
+        }
+
     }
 
     public interface ListItemClickListener {

@@ -22,7 +22,7 @@ public interface WebService {
      * @return a {@link MovieResponse} {@link Call}
      */
     @GET("movie/popular")
-    Call<MovieResponse> getPopularMovies(@Query("page") int pageNo, @Query("api_key") String api_key);
+    Call<MovieResponse> getPopularMovies(@Query("page") int pageNo, @Query("api_key") String api_key, @Query("language") String language);
 
     /**
      * This method specifies the Movies endpoint based on its rating
@@ -32,7 +32,7 @@ public interface WebService {
      * @return a {@link MovieResponse} {@link Call}
      */
     @GET("movie/top_rated")
-    Call<MovieResponse> getTopRatedMovies(@Query("page") int pageNo, @Query("api_key") String api_key);
+    Call<MovieResponse> getTopRatedMovies(@Query("page") int pageNo, @Query("api_key") String api_key, @Query("language") String language);
 
     /**
      * This method specifies the Movie Review endpoint

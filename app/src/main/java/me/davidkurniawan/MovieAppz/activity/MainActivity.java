@@ -15,11 +15,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import me.davidkurniawan.MovieAppz.R;
 import com.fxn.cue.enums.Type;
@@ -32,6 +34,7 @@ import me.davidkurniawan.MovieAppz.adapters.MoviesAdapter;
 import me.davidkurniawan.MovieAppz.fragment.FavouriteMoviesFragment;
 import me.davidkurniawan.MovieAppz.helper.ApiClient;
 import me.davidkurniawan.MovieAppz.helper.AutoFitGridLayoutManager;
+import me.davidkurniawan.MovieAppz.helper.Preference;
 import me.davidkurniawan.MovieAppz.helper.WebService;
 import me.davidkurniawan.MovieAppz.model.Movie;
 import me.davidkurniawan.MovieAppz.model.MovieResponse;
@@ -45,6 +48,7 @@ import retrofit2.Response;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static me.davidkurniawan.MovieAppz.helper.Preference.LANGUAGE;
 import static me.davidkurniawan.MovieAppz.utils.AppConstants.api_key;
 
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.ListItemClickListener {
@@ -59,13 +63,16 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     RecyclerView recyclerView;
     @BindView(R.id.fab)
     FloatingActionButton fab;
+
     private MoviesAdapter mAdapter;
     private AutoFitGridLayoutManager layoutManager;
     private WebService webService;
     private boolean isPopular = true;
     private int currentPage = 1;
     private Parcelable recyclerViewState;
-
+    public String language = "id";
+    private Preference preference;
+    private PopupMenu popupMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         webService = ApiClient.getRetrofit().create(WebService.class);
         loadProgressBar(true);
         setupViewModels();
+        preference = new Preference(MainActivity.this);
 
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -97,8 +105,15 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(MainActivity.this, v);
-                popupMenu.getMenuInflater().inflate(R.menu.menu_fab, popupMenu.getMenu());
+                popupMenu = new PopupMenu(MainActivity.this, v);
+
+                if(language == "id"){
+                    popupMenu.getMenuInflater().inflate(R.menu.menu_fab_id, popupMenu.getMenu());
+                } else {
+                    popupMenu.getMenuInflater().inflate(R.menu.menu_fab, popupMenu.getMenu());
+                }
+
+
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
@@ -107,20 +122,23 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                             case R.id.sort_by_popular_action:
                                 findViewById(R.id.favourite_fragment_container).setVisibility(GONE);
                                 recyclerView.setVisibility(VISIBLE);
-                                setTitle(getString(R.string.sort_by_most_popular));
-                                loadPopularMovies();
+                                //setTitle(getString(R.string.sort_by_most_popular));
+                                setTitle(language == "id" ? "Terpopuler" : "Most Popular");
+                                loadPopularMovies(language,true);
                                 isPopular = true;
                                 return true;
                             case R.id.sort_by_rated_action:
                                 findViewById(R.id.favourite_fragment_container).setVisibility(GONE);
                                 recyclerView.setVisibility(VISIBLE);
-                                setTitle(getString(R.string.sort_by_most_rated));
-                                loadTopRatedMovies();
+                                //setTitle(getString(R.string.sort_by_most_rated));
+                                setTitle(language == "id" ? "Teratas" : "Top Rated");
+                                loadTopRatedMovies(language,true);
                                 isPopular = false;
                                 return true;
                             case R.id.view_favourites:
                                 // Create new fragment and transaction
-                                setTitle(getString(R.string.favourite_activity_label));
+                                //setTitle(getString(R.string.favourite_activity_label));
+                                setTitle("Favoritku");
                                 findViewById(R.id.favourite_fragment_container).setVisibility(VISIBLE);
                                 recyclerView.setVisibility(GONE);
                                 Fragment newFragment = new FavouriteMoviesFragment();
@@ -176,12 +194,54 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.about_app) {
-            Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
+        if (id == R.id.EN) {
+            currentPage = 1;
+            language = "en";
+            preference.saveSPString(LANGUAGE, language);
+
+            if(isPopular){
+                findViewById(R.id.favourite_fragment_container).setVisibility(GONE);
+                recyclerView.setVisibility(VISIBLE);
+                setTitle(getString(R.string.sort_by_most_popular));
+                loadPopularMovies("en",true);
+                isPopular = true;
+            }
+            else {
+                findViewById(R.id.favourite_fragment_container).setVisibility(GONE);
+                recyclerView.setVisibility(VISIBLE);
+                setTitle(getString(R.string.sort_by_most_rated));
+                loadTopRatedMovies("en",true);
+                isPopular = false;
+            }
+            //Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            //startActivity(intent);
             return true;
         }
+        else if(id== R.id.ID ) {
+            language = "id";
+            currentPage = 1;
+            if(isPopular){
+
+                findViewById(R.id.favourite_fragment_container).setVisibility(GONE);
+                recyclerView.setVisibility(VISIBLE);
+                setTitle("Terpopuler");
+                loadPopularMovies("id",true);
+                isPopular = true;
+            }
+            else {
+
+                findViewById(R.id.favourite_fragment_container).setVisibility(GONE);
+                recyclerView.setVisibility(VISIBLE);
+                setTitle("Teratas");
+                loadTopRatedMovies("id",true);
+                isPopular = false;
+            }
+            return true;
+        }
+
+        Log.d("gantibahasa",language == null ? "kosong" : language);
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -241,9 +301,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         loadProgressBar(true);
         if (NetworkUtil.isNetworkAvailable(MainActivity.this)) {
             if (!isPopular) {
-                loadTopRatedMovies();
+                loadTopRatedMovies(language,true);
             } else {
-                loadPopularMovies();
+                loadPopularMovies(language,true);
             }
         } else {
             loadProgressBar(false);
@@ -252,20 +312,31 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         }
     }
 
-    private void loadPopularMovies() {
-        MovieViewModelFactory factory = new MovieViewModelFactory(currentPage);
+    private void loadPopularMovies(String lan, final boolean clearList) {
+        MovieViewModelFactory factory = new MovieViewModelFactory(currentPage, lan);
         MovieViewModel viewModel = ViewModelProviders.of(this, factory).get(MovieViewModel.class);
-        viewModel.getPopularMovieResponse().observe(this, new Observer<Response<MovieResponse>>() {
+        (new MovieViewModel(currentPage,lan)).getPopularMovieResponse().observe(this, new Observer<Response<MovieResponse>>() {
             @Override
             public void onChanged(@Nullable Response<MovieResponse> movieResponse) {
                 swipeRefreshLayout.setRefreshing(false);
                 loadProgressBar(false);
+
+
+
+                Toast.makeText(MainActivity.this, "BAHASA : " + language, Toast.LENGTH_SHORT).show();
+
                 if (movieResponse != null) {
                     if (movieResponse.isSuccessful()) {
                         List<Movie> movies = getMovieResponse(movieResponse);
+
+                        for (Movie item :
+                                movies) {
+                            Log.d("movies",item.getOverview());
+                        }
+
                         if (movies != null) {
                             populateUI();
-                            mAdapter.setMovieList(movies);
+                            mAdapter.setMovieList(movies, clearList);
                             if (recyclerViewState != null) {
                                 layoutManager.onRestoreInstanceState(recyclerViewState);
                             }
@@ -287,20 +358,31 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
         });
     }
 
-    private void loadTopRatedMovies() {
-        MovieViewModelFactory factory = new MovieViewModelFactory(currentPage);
+    private void loadTopRatedMovies(String lan, final boolean clearList) {
+        MovieViewModelFactory factory = new MovieViewModelFactory(currentPage, lan);
         MovieViewModel viewModel = ViewModelProviders.of(this, factory).get(MovieViewModel.class);
-        viewModel.getTopRatedMoviesResponse().observe(this, new Observer<Response<MovieResponse>>() {
+        //viewModel
+        (new MovieViewModel(currentPage,lan)).getTopRatedMoviesResponse().observe(this, new Observer<Response<MovieResponse>>() {
             @Override
             public void onChanged(@Nullable Response<MovieResponse> movieResponse) {
                 swipeRefreshLayout.setRefreshing(false);
                 loadProgressBar(false);
                 if (movieResponse != null) {
+
+                    for (Movie item :
+                            movieResponse.body().getMovieList()) {
+
+                        Log.d("loadtop",item.getOverview());
+
+                    }
+
+                    Toast.makeText(MainActivity.this, "BAHASA : " + language, Toast.LENGTH_SHORT).show();
+
                     if (movieResponse.isSuccessful()) {
                         List<Movie> movies = getMovieResponse(movieResponse);
                         if (movies != null) {
                             populateUI();
-                            mAdapter.setMovieList(movies);
+                            mAdapter.setMovieList(movies,clearList);
                             if (recyclerViewState != null) {
                                 layoutManager.onRestoreInstanceState(recyclerViewState);
                             }
@@ -326,25 +408,39 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
 
     private List<Movie> getMovieResponse(Response<MovieResponse> response) {
         MovieResponse movieResponse = response.body();
-        return movieResponse != null ? movieResponse.getMovieList() : null;
+        List<Movie> result = movieResponse != null ? movieResponse.getMovieList() : null;
+
+        String tidakTersedia = language == "id" ? "Tidak Tersedia" : "Not Available";
+
+        if(result != null){
+
+            for (Movie item:result) {
+                String over = item.getOverview();
+                item.setOverview(over.isEmpty()? tidakTersedia : over );
+            }
+
+        }
+
+        return  result;
     }
 
     public void loadMoreMovies(int currentPage) {
         loadProgressBar(true);
         Call<MovieResponse> call;
         if (!isPopular) {
-            call = webService.getTopRatedMovies(currentPage, api_key);
+            call = webService.getTopRatedMovies(currentPage, api_key, language);
         } else {
-            call = webService.getPopularMovies(currentPage, api_key);
+            call = webService.getPopularMovies(currentPage, api_key, language);
         }
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(@NonNull Call<MovieResponse> call, @NonNull Response<MovieResponse> response) {
                 loadProgressBar(false);
+                Toast.makeText(MainActivity.this, "BAHASA : " + language, Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
                 List<Movie> movies = getMovieResponse(response);
                 if (movies != null) {
-                    mAdapter.setMovieList(movies);
+                    mAdapter.setMovieList(movies,false);
                 }
             }
 

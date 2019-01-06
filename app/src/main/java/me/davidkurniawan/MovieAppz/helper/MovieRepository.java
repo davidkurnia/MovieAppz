@@ -5,6 +5,9 @@ import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import java.io.Console;
+
+import me.davidkurniawan.MovieAppz.model.Movie;
 import me.davidkurniawan.MovieAppz.model.MovieResponse;
 import me.davidkurniawan.MovieAppz.model.ReviewResponse;
 import me.davidkurniawan.MovieAppz.model.TrailerResponse;
@@ -38,13 +41,19 @@ public class MovieRepository {
      * @param currentPage required page number
      * @return a {@link LiveData} of {@link MovieResponse} {@link Response}
      */
-    public LiveData<Response<MovieResponse>> getMoviesResponse(int currentPage) {
+    public LiveData<Response<MovieResponse>> getMoviesResponse(int currentPage,String language) {
         final MutableLiveData<Response<MovieResponse>> moviesResponse = new MutableLiveData<>();
-        Call<MovieResponse> call = callPopularMovies(currentPage);
+        Call<MovieResponse> call = callPopularMovies(currentPage, language);
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(@NonNull Call<MovieResponse> call, @NonNull Response<MovieResponse> response) {
                 Log.d(TAG, "PopularMovieResponse: " + response.body());
+
+                for (Movie item:
+                     response.body().getMovieList()) {
+                    Log.d("xxx",item.getOverview());
+                }
+
                 moviesResponse.setValue(response);
             }
 
@@ -62,9 +71,9 @@ public class MovieRepository {
      * @param currentPage required page number
      * @return a {@link LiveData} of {@link MovieResponse} {@link Response}
      */
-    public LiveData<Response<MovieResponse>> getTopRatedMovies(int currentPage) {
+    public LiveData<Response<MovieResponse>> getTopRatedMovies(int currentPage, String language) {
         final MutableLiveData<Response<MovieResponse>> moviesResponse = new MutableLiveData<>();
-        Call<MovieResponse> call = callTopRatedMovies(currentPage);
+        Call<MovieResponse> call = callTopRatedMovies(currentPage, language);
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(@NonNull Call<MovieResponse> call, @NonNull Response<MovieResponse> response) {
@@ -135,8 +144,9 @@ public class MovieRepository {
      * @param currentPage required page number
      * @return a {@link MovieResponse} {@link Call}
      */
-    private Call<MovieResponse> callPopularMovies(int currentPage) {
-        return ApiClient.getRetrofit().create(WebService.class).getPopularMovies(currentPage, api_key);
+    private Call<MovieResponse> callPopularMovies(int currentPage, String language) {
+        Log.d("language",language == null ? "kosong" : language);
+        return ApiClient.getRetrofit().create(WebService.class).getPopularMovies(currentPage, api_key, language);
     }
 
     /**
@@ -145,8 +155,8 @@ public class MovieRepository {
      * @param currentPage required page number
      * @return a {@link MovieResponse} {@link Call}
      */
-    private Call<MovieResponse> callTopRatedMovies(int currentPage) {
-        return ApiClient.getRetrofit().create(WebService.class).getTopRatedMovies(currentPage, api_key);
+    private Call<MovieResponse> callTopRatedMovies(int currentPage, String language) {
+        return ApiClient.getRetrofit().create(WebService.class).getTopRatedMovies(currentPage, api_key, language);
     }
 
     /**

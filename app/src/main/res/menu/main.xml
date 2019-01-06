@@ -2,6 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/about_app"
-        android:title="@string/about_app" />
+        android:id="@+id/ID"
+        android:title="Indonesia" />
+    <item
+        android:id="@+id/EN"
+        android:title="English" />
 </menu>

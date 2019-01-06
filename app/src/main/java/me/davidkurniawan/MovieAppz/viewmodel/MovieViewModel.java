@@ -2,6 +2,7 @@ package me.davidkurniawan.MovieAppz.viewmodel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
+import android.util.Log;
 
 import me.davidkurniawan.MovieAppz.helper.MovieRepository;
 import me.davidkurniawan.MovieAppz.model.MovieResponse;
@@ -12,10 +13,10 @@ public class MovieViewModel extends ViewModel {
     private LiveData<Response<MovieResponse>> popularMovies;
     private LiveData<Response<MovieResponse>> topRatedMovies;
 
-    MovieViewModel(int currentPage) {
-
-        popularMovies = MovieRepository.getInstance().getMoviesResponse(currentPage);
-        topRatedMovies = MovieRepository.getInstance().getTopRatedMovies(currentPage);
+    public MovieViewModel(int currentPage, String language) {
+        Log.d("currPage", String.valueOf(currentPage));
+        popularMovies = MovieRepository.getInstance().getMoviesResponse(currentPage,language);
+        topRatedMovies = MovieRepository.getInstance().getTopRatedMovies(currentPage,language);
     }
 
     public LiveData<Response<MovieResponse>> getPopularMovieResponse() {
