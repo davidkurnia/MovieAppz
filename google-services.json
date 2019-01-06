@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "292242992713",
+    "firebase_url": "https://movieappz-aad5c.firebaseio.com",
+    "project_id": "movieappz-aad5c",
+    "storage_bucket": "movieappz-aad5c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:292242992713:android:82b9ff62179fedbd",
+        "android_client_info": {
+          "package_name": "me.davidkurniawan.MovieAppz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "292242992713-6gca05f3velv4gc707k3te8br8damglq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLsf3HGVAvKM4PkKFZ2r-Ywd_RNib4OjY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

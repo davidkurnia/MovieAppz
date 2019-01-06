@@ -35,5 +35,4 @@
             android:name="me.davidkurniawan.MovieAppz.activity.AboutActivity"
             android:parentActivityName="me.davidkurniawan.MovieAppz.activity.MainActivity" />
     </application>
-
 </manifest>
