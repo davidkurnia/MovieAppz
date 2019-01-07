@@ -23,13 +23,13 @@ import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import me.davidkurniawan.MovieAppz.R;
 import com.fxn.cue.enums.Type;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.davidkurniawan.MovieAppz.R;
 import me.davidkurniawan.MovieAppz.adapters.MoviesAdapter;
 import me.davidkurniawan.MovieAppz.fragment.FavouriteMoviesFragment;
 import me.davidkurniawan.MovieAppz.helper.ApiClient;
@@ -73,12 +73,11 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
     public String language = "id";
     private Preference preference;
     private PopupMenu popupMenu;
-
+    private  MainActivity that;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         if (savedInstanceState != null) {
             isPopular = savedInstanceState.getBoolean(getString(R.string.save_state));
         }
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                 setupViewModels();
             }
         });
-
+        that = this;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,6 +118,18 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
+
+                            case R.id.view_alarm:
+                                //findViewById(R.id.favourite_fragment_container).setVisibility(GONE);
+                                //recyclerView.setVisibility(VISIBLE);
+                                setTitle("Set Notification");
+
+                                Bundle extras = new Bundle();
+                                Intent intent = new Intent(MainActivity.this, Alarm2.class);
+                                intent.putExtras(extras);
+                                startActivity(intent);
+
+                                return true;
                             case R.id.sort_by_popular_action:
                                 findViewById(R.id.favourite_fragment_container).setVisibility(GONE);
                                 recyclerView.setVisibility(VISIBLE);
@@ -452,6 +463,8 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Lis
             }
         });
     }
+
+
 
     private void loadProgressBar(boolean load) {
         if (load) {

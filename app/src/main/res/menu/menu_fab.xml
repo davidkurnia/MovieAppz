@@ -10,4 +10,8 @@
     <item
         android:id="@+id/view_favourites"
         android:title="@string/view_favourites" />
+    <item
+        android:id="@+id/view_alarm"
+        android:title="@string/view_alarms"
+        />
 </menu>

@@ -5,9 +5,11 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name="me.davidkurniawan.MovieAppz.MovieAppz"
+        android:name=".MovieAppz"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="MovieAppz"
@@ -16,7 +18,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name="me.davidkurniawan.MovieAppz.activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -26,20 +28,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="me.davidkurniawan.MovieAppz.activity.FavouriteActivity"
-            android:parentActivityName="me.davidkurniawan.MovieAppz.activity.MainActivity" />
+            android:name=".activity.FavouriteActivity"
+            android:parentActivityName=".activity.MainActivity" />
         <activity
-            android:name="me.davidkurniawan.MovieAppz.activity.DetailsActivity"
-            android:parentActivityName="me.davidkurniawan.MovieAppz.activity.MainActivity" />
+            android:name=".activity.DetailsActivity"
+            android:parentActivityName=".activity.MainActivity" />
         <activity
-            android:name="me.davidkurniawan.MovieAppz.activity.AboutActivity"
-            android:parentActivityName="me.davidkurniawan.MovieAppz.activity.MainActivity" />
-        <service
-            android:name=".MyFirebaseMessagingService">
+            android:name=".activity.AboutActivity"
+            android:parentActivityName=".activity.MainActivity" />
+
+        <service android:name=".MyFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <activity
+            android:name=".activity.Alarm2"
+            android:label="@string/title_activity_alarm2"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
